@@ -8,7 +8,7 @@ import java.util.List;
  * Created by ThaiVanTien on 9/29/2016.
  */
 
-public class DataRespone {
+public class DataResponse {
     @SerializedName("error")
     private int error;
     @SerializedName("message")

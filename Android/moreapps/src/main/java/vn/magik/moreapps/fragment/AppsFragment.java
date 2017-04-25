@@ -21,11 +21,11 @@ public class AppsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragmentmain, container, false);
         listView = (ListView) view.findViewById(R.id.listView);
-        onUpdateViewe();
+        onUpdateView();
         return view;
     }
 
-    public void onUpdateViewe() {
+    public void onUpdateView() {
         if (listView != null) {
             listAdapter = new ListAdapter(getActivity(), Singleton.getInstance().getCategories());
             listView.setAdapter(listAdapter);

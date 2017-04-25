@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import vn.magik.moreapps.adapter.ViewPagerAdapter;
 import vn.magik.moreapps.callLib.CallBackLoadServer;
@@ -14,7 +13,7 @@ import vn.magik.magikapps.R;
 import vn.magik.magikapps.fragment.TabOneFragment;
 
 public class MainActivity extends AppCompatActivity implements CallBackLoadServer {
-
+    public static final String BASE_URL = "http://work.magik.vn/api.php";
     private ViewPager viewPager;
     private TabLayout tabLayout;
     TabOneFragment tabOneFragment;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements CallBackLoadServe
         tabOneFragment = new TabOneFragment();
         appsFragment = new AppsFragment();
         initViewPagerAndTab();
-        InitLib.initLab(MainActivity.this, this);
+        InitLib.getInstance().initLab(MainActivity.this, BASE_URL, this);
 
     }
 
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements CallBackLoadServe
     @Override
     public void onFinishLoadServer(int newApp) {
         tabOneFragment.updateAppView(newApp);
-        appsFragment.onUpdateViewe();
+        appsFragment.onUpdateView();
     }
 
 

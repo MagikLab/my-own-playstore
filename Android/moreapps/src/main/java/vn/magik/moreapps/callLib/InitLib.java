@@ -1,37 +1,47 @@
 package vn.magik.moreapps.callLib;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.google.gson.Gson;
+
+import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vn.magik.moreapps.model.Category;
+import vn.magik.moreapps.retrofitapi.UserServices;
 import vn.magik.moreapps.type.CheckMore;
 import vn.magik.moreapps.utils.HandleDataLocal;
 import vn.magik.moreapps.utils.Singleton;
-import vn.magik.moreapps.model.DataRespone;
-import vn.magik.moreapps.retrofitapi.CallRetrolfit;
-import vn.magik.moreapps.retrofitapi.CategoryApi;
+import vn.magik.moreapps.model.DataResponse;
 
 /**
  * Created by thaitien on 10/14/2016.
  */
 
 public class InitLib {
+    private static InitLib instance = null;
+    private HandleDataLocal mHandleDataLocal;
 
-    static HandleDataLocal mHandleDataLocal;
+    public static InitLib getInstance() {
+        if (instance == null) {
+            instance = new InitLib();
+        }
+        return instance;
+    }
 
-    public static void initLab(Context mContext, CallBackLoadServer callBack) {
+
+    public void initLab(Context mContext, String urlServer, CallBackLoadServer callBack) {
+        mHandleDataLocal = new HandleDataLocal(mContext);
         if (CheckMore.isInternet(mContext)) {
-            loadDataOnline(mContext, callBack);
+            loadDataOnline(urlServer, callBack);
         } else {
-            mHandleDataLocal = new HandleDataLocal(mContext);
             String jsonString = mHandleDataLocal.getData();
             if (jsonString != null) {
                 Singleton.getInstance().setCategories(new Gson()
-                        .fromJson(jsonString, DataRespone.class)
+                        .fromJson(jsonString, DataResponse.class)
                         .getData()
                         .getCategories());
                 callBack.onFinishLoadServer(0);
@@ -41,33 +51,37 @@ public class InitLib {
 
     }
 
-    public static void loadDataOnline(final Context context, final CallBackLoadServer callBack) {
-        CategoryApi categoryApi = CallRetrolfit.getRetrolfit().create(CategoryApi.class);
-        retrofit2.Call<DataRespone> callListData = categoryApi.getCallListData();
-        callListData.enqueue(new Callback<DataRespone>() {
+    private void loadDataOnline(String urlServer, final CallBackLoadServer callBack) {
+        UserServices userServices = new UserServices();
+        String language = Locale.getDefault().getLanguage();
+        userServices.getListData(urlServer, language, new Callback<DataResponse>() {
             @Override
-            public void onResponse(Call<DataRespone> call, Response<DataRespone> response) {
-                DataRespone dataRespone = response.body();
-                Singleton.getInstance().setCategories(dataRespone.getData().getCategories());
-                //Log.d("HUONG", "Categories size" + Singleton.getInstance().getCategories().size());
-                mHandleDataLocal = new HandleDataLocal(context);
-                Gson gs = new Gson();
-                int count = getTotalCount(mHandleDataLocal.getData());
-                String jsonString = gs.toJson(response.body());
-                mHandleDataLocal.saveData(jsonString);
-                callBack.onFinishLoadServer(dataRespone.getData().getTotalApp() - count + 1);
+            public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
+                if (response != null && response.isSuccessful() && response.body() != null) {
+                    DataResponse dataResponse = response.body();
+                    List<Category> categories = dataResponse.getData().getCategories();
+                    for (int i = categories.size() - 1; i >= 0; i--) {
+                        if (categories.get(i).getApps().size() == 0)
+                            categories.remove(i);
+                    }
+                    Singleton.getInstance().setCategories(categories);
+                    int count = getTotalCount(mHandleDataLocal.getData());
+                    String jsonString = new Gson().toJson(response.body());
+                    mHandleDataLocal.saveData(jsonString);
+                    callBack.onFinishLoadServer(dataResponse.getData().getTotalApp() - count + 1);
+                }
             }
 
             @Override
-            public void onFailure(Call<DataRespone> call, Throwable t) {
-
+            public void onFailure(Call<DataResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }
 
-    private static int getTotalCount(String jsonString) {
+    private int getTotalCount(String jsonString) {
         if (jsonString != null) {
-            return new Gson().fromJson(jsonString, DataRespone.class).getData().getTotalApp();
+            return new Gson().fromJson(jsonString, DataResponse.class).getData().getTotalApp();
         } else return 0;
     }
 

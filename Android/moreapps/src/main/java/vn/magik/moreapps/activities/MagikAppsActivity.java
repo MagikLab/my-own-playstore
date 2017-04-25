@@ -22,6 +22,7 @@ public class MagikAppsActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment, new AppsFragment());
         transaction.commit();
+
     }
 
     @Override

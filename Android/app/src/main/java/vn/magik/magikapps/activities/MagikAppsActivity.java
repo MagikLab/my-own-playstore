@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import vn.magik.magikapps.R;
-import vn.magik.magikapps.fragment.TabOneFragment;
 import vn.magik.moreapps.adapter.ViewPagerAdapter;
 import vn.magik.moreapps.callLib.CallBackLoadServer;
 import vn.magik.moreapps.callLib.InitLib;
@@ -16,6 +15,7 @@ import vn.magik.moreapps.fragment.AppsFragment;
 
 public class MagikAppsActivity extends AppCompatActivity implements CallBackLoadServer {
 
+    public static final String BASE_URL = "http://work.magik.vn/api.php";
     private ViewPager viewPager;
     private TabLayout tabLayout;
     Toolbar toolbar;
@@ -27,8 +27,12 @@ public class MagikAppsActivity extends AppCompatActivity implements CallBackLoad
         setContentView(R.layout.activity_main);
         appsFragment = new AppsFragment();
         initViewPagerAndTab();
-        InitLib.initLab(MagikAppsActivity.this, this);
-
+        InitLib.getInstance().initLab(MagikAppsActivity.this, BASE_URL, new CallBackLoadServer() {
+            @Override
+            public void onFinishLoadServer(int totalApps) {
+                //todo update new app
+            }
+        });
     }
 
     public void initViewPagerAndTab() {
@@ -49,7 +53,7 @@ public class MagikAppsActivity extends AppCompatActivity implements CallBackLoad
 
     @Override
     public void onFinishLoadServer(int newApp) {
-        appsFragment.onUpdateViewe();
+        appsFragment.onUpdateView();
     }
 
 
