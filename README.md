@@ -7,6 +7,13 @@ add library to dependencies:
     dependencies {
         compile 'vn.magik.libraries:moreapps:1.2'
     }
+We have Fragment "AppsFragment", so we can add Fragment to Activty:
+
+    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+    AppsFragment appsFragment = new AppsFragment();
+    fragmentTransaction.add(R.id.view_contain, appsFragment);
+    fragmentTransaction.commit();
+
 
 # View sample
 
