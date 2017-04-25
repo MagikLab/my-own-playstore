@@ -19,7 +19,7 @@ Function Init load api
     public static final String URL = "http://work.magik.vn/api.php";
     InitLib.getInstance().initLab(MagikAppsActivity.this, URL, new CallBackLoadServer() {
         @Override
-        public void onFinishLoadServer(int totalApps) {
+        public void onFinishLoadServer(int countNewApp) {
             //todo update new app
         }
     });
