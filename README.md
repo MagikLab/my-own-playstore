@@ -9,7 +9,7 @@ Android Client:
 add library to dependencies:
 
     dependencies {
-        compile 'vn.magik.libraries:moreapps:1.2'
+        compile 'vn.magik.libraries:moreapps:1.4'
     }
     
 We have Fragment "AppsFragment", so we can add Fragment to Activty:
