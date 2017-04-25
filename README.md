@@ -1,8 +1,14 @@
 # My-own-playstore
 Make a android store for your company, your team.
-#Config:
-coming soon
-#View sample
+
+# Config:
+add library to dependencies:
+
+    dependencies {
+        compile 'vn.magik.libraries:moreapps:1.2'
+    }
+
+# View sample
 
 Aplication of Magiklab:
 
