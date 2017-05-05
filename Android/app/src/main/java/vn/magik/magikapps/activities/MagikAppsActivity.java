@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 
 import vn.magik.magikapps.R;
@@ -27,12 +28,7 @@ public class MagikAppsActivity extends AppCompatActivity implements CallBackLoad
         setContentView(R.layout.activity_main);
         appsFragment = new AppsFragment();
         initViewPagerAndTab();
-        InitLib.getInstance().initLab(MagikAppsActivity.this, BASE_URL, new CallBackLoadServer() {
-            @Override
-            public void onFinishLoadServer(int totalApps) {
-                //todo update new app
-            }
-        });
+        InitLib.getInstance().initLab(MagikAppsActivity.this, BASE_URL,this);
     }
 
     public void initViewPagerAndTab() {
@@ -53,6 +49,8 @@ public class MagikAppsActivity extends AppCompatActivity implements CallBackLoad
 
     @Override
     public void onFinishLoadServer(int newApp) {
+        //handle show notification
+        Log.d("MAGIKAPP", "new App: " + newApp);
         appsFragment.onUpdateView();
     }
 

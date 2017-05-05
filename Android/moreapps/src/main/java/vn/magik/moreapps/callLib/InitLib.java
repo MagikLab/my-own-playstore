@@ -68,7 +68,7 @@ public class InitLib {
                     int count = getTotalCount(mHandleDataLocal.getData());
                     String jsonString = new Gson().toJson(response.body());
                     mHandleDataLocal.saveData(jsonString);
-                    callBack.onFinishLoadServer(dataResponse.getData().getTotalApp() - count + 1);
+                    callBack.onFinishLoadServer(dataResponse.getData().getTotalApp() - count);
                 }
             }
 
