@@ -21,6 +21,16 @@
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="Cho Tre em" />
+        <TextView
+            android:id="@+id/txtDescCate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#424242"
+            android:textSize="14sp"
+            android:textStyle="normal"
+            tools:text="Học từ vựng là cái gốc của ngôn ngữ. Học từ vựng là cái gốc của ngôn ngữ. Học từ vựng là cái gốc của ngôn ngữ." />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewAllCate"

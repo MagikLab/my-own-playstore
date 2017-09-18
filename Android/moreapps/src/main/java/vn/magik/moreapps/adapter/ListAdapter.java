@@ -68,8 +68,16 @@ public class ListAdapter extends BaseAdapter implements Runnable {
 
         } else {
             view = mInflater.inflate(R.layout.view_full_category, null);
+            //update name.
             TextView text = (TextView) view.findViewById(R.id.txtTitleCate);
             text.setText(listDemo.get(positon).getName());
+
+            //update desc
+            TextView textDes = (TextView) view.findViewById(R.id.txtDescCate);
+            textDes.setText(listDemo.get(positon).getDescription());
+            textDes.setVisibility(
+                    listDemo.get(positon).getDescription().equals("")? View.GONE: View.VISIBLE);
+
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerViewAllCate);
             recyclerView.setLayoutManager(new LinearLayoutManager(activity.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
             recyclerView.setAdapter(new ViewCategoryAdapter(listDemo.get(positon).getApps(), view.getContext()));

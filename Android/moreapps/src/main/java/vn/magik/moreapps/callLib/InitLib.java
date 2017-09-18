@@ -24,7 +24,7 @@ import vn.magik.moreapps.model.DataResponse;
 public class InitLib {
     private static InitLib instance = null;
     private HandleDataLocal mHandleDataLocal;
-
+    private static final int LIB_VERSION = 2;
     public static InitLib getInstance() {
         if (instance == null) {
             instance = new InitLib();
@@ -35,6 +35,23 @@ public class InitLib {
 
     public void initLab(Context mContext, String urlServer, CallBackLoadServer callBack) {
         mHandleDataLocal = new HandleDataLocal(mContext);
+        String languageCode = Locale.getDefault().getLanguage();
+        String countryCode= Locale.getDefault().getCountry();
+        String packageName = mContext.getApplicationContext().getPackageName();
+        String conj = "?";
+        if(urlServer.contains("?"))
+            conj = "&";
+
+        urlServer = String.format("%s%slanguage=%s&country=%s&package=%s&version=%s",
+                urlServer,
+                conj,
+                languageCode,
+                countryCode,
+                packageName,
+                LIB_VERSION
+                );
+
+
         if (CheckMore.isInternet(mContext)) {
             loadDataOnline(urlServer, callBack);
         } else {
