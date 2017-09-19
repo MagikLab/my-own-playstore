@@ -33,6 +33,8 @@ Function add fragment to View, you must to call function Init before add Fragmen
         fragmentTransaction.commit();
     }
 
+# Build Library to Jcenter
+https://medium.com/@daniellevass/how-to-publish-your-android-studio-library-to-jcenter-5384172c4739
 
 # View sample
 
